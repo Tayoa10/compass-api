@@ -21,15 +21,24 @@ app.post('/api/chat', async (req, res) => {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: req.body.model || 'claude-sonnet-4-6',
+        model: 'claude-sonnet-4-6',
         max_tokens: req.body.max_tokens || 1200,
         system: req.body.system,
         messages: req.body.messages
       })
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Anthropic error:', JSON.stringify(errorData));
+      return res.status(response.status).json(errorData);
+    }
+
     const data = await response.json();
+    console.log('Response content length:', data.content ? data.content.length : 0);
     res.json(data);
   } catch (err) {
+    console.error('Server error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
