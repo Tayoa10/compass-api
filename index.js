@@ -51,14 +51,15 @@ app.post('/api/capture-lead', async (req, res) => {
       return res.status(400).json({ error: 'Email is required' });
     }
 
-    const contactData = {
-      firstName,
-      lastName,
-      email,
-      phone,
-      locationId: process.env.GHL_LOCATION_ID,
-      source: 'Next Chapter Clarity Compass'
-    };
+const contactData = {
+  firstName,
+  lastName,
+  email,
+  phone,
+  locationId: process.env.GHL_LOCATION_ID,
+  source: 'Next Chapter Clarity Compass',
+  tags: ['compass-lead']
+};
 
     const response = await fetch('https://services.leadconnectorhq.com/contacts/', {
       method: 'POST',
